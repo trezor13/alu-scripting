@@ -7,12 +7,12 @@ import requests
 
 
 def top_ten(subreddit):
-    """Print the first 10 hot post titles."""
+    """Print the first 10 hot posts of a subreddit."""
 
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
 
     headers = {
-        "User-Agent": "python:reddit.api.project:v1.0 (by /u/student)"
+        "User-Agent": "Mozilla/5.0"
     }
 
     params = {
@@ -30,8 +30,8 @@ def top_ten(subreddit):
         print("None")
         return
 
-    data = response.json()["data"]["children"]
+    posts = response.json()["data"]["children"]
 
-    for post in data:
+    for post in posts:
         print(post["data"]["title"])
         
