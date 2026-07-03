@@ -1,37 +1,27 @@
 #!/usr/bin/python3
-"""
-Prints the titles of the first 10 hot posts of a subreddit.
-"""
+"""Find top 10 hot posts of subreddit from reddit API"""
 
 import requests
 
 
 def top_ten(subreddit):
-    """Print the first 10 hot posts of a subreddit."""
-
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    user_agent = "macos:com.intranet.apistuff:v1.0.0(by /u/PlasticDrummer2706)"
+    headers = {"User-Agent": user_agent}
 
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
-    params = {
-        "limit": 10
-    }
+    if response.status_code == 200:
+        parsed_data = response.json()
+        hot_posts = parsed_data["data"]["children"]
 
-    response = requests.get(
-        url,
-        headers=headers,
-        params=params,
-        allow_redirects=False
-    )
+        for post in hot_posts[:10]:
 
-    if response.status_code != 200:
-        print("None")
-        return
+            print(post["data"]["title"])
+    else:
+        print(None)
 
-    posts = response.json()["data"]["children"]
 
-    for post in posts:
-        print(post["data"]["title"])
-        
+if __name__ == "__main__":
+    top_ten("programming")
+    
